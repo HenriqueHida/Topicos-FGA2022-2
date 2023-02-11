@@ -1,7 +1,7 @@
 import pygame, random
 from pygame.locals import *
 
-# Helper functions
+# # Helper functions
 def on_grid_random():
     x = random.randint(0,29)
     y = random.randint(0,29)
@@ -22,11 +22,18 @@ pygame.display.set_caption('Snake')
 
 snake = [(100, 100), (110, 100), (120,100)]
 snake_skin = pygame.Surface((10,10))
-snake_skin.fill((255,255,255)) #White
+snake_skin.fill((255,165,0)) #White
 
 apple_pos = on_grid_random()
 apple = pygame.Surface((10,10))
-apple.fill((150,0,0))
+apple.fill((124,252,0))
+
+with open('posicao.txt', 'w') as f:
+    f.write('snake(3): ')
+    f.write(' '.join('({} {})'.format(x[0],x[1]) for x in snake))
+    f.write('\napple: ')
+    apple_pos_str = str(apple_pos)
+    f.write(apple_pos_str)
 
 my_direction = LEFT
 
@@ -37,7 +44,7 @@ score = 0
 
 game_over = False
 while not game_over:
-    clock.tick(10)
+    clock.tick(11)
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
@@ -57,7 +64,14 @@ while not game_over:
         apple_pos = on_grid_random()
         snake.append((0,0))
         score = score + 1
-        
+        with open('posicao.txt', 'a') as fs:
+            fs.write('\n')
+            fs.write('snake({}): '.format(score+3))
+            fs.write(' '.join('({} {})'.format(x[0],x[1]) for x in snake))
+            fs.write('\napple: ')
+            apple_pos_str = str(apple_pos)
+            fs.write(apple_pos_str)
+    
     # Check if snake collided with boundaries
     if snake[0][0] == 300 or snake[0][1] == 300 or snake[0][0] < 0 or snake[0][1] < 0:
         game_over = True
