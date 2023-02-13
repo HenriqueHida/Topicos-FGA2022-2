@@ -62,7 +62,15 @@ while not game_over:
                 my_direction = RIGHT
 
     if collision(snake[0], apple_pos):
-        apple_pos = on_grid_random()
+        fora = False
+        while not fora:       
+            dentro = False
+            apple_pos = on_grid_random()
+            for j in snake:
+                if apple_pos == j:
+                    dentro = True
+            if not dentro:
+                fora = True
         snake.append((0,0))
         score = score + 1
         with open('posicao.txt', 'a') as fs:
